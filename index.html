@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Lock Demo</title>
+  <style>
+    body {
+      background: #222;
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    #gameCanvas {
+      display: block;
+      margin: 40px auto;
+      background: #444;
+      border: 2px solid #fff;
+      width: 600px;
+      height: 400px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mouse Lock Demo</h1>
+  <p>Click the box below to lock your mouse. Move your mouse to see movement values. Press <b>Esc</b> to unlock.</p>
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+  <div id="status">Pointer is unlocked.</div>
+  <script>
+    const gameCanvas = document.getElementById('gameCanvas');
+    const status = document.getElementById('status');
+
+    gameCanvas.addEventListener('click', () => {
+      gameCanvas.requestPointerLock();
+    });
+
+    document.addEventListener('pointerlockchange', () => {
+      if (document.pointerLockElement === gameCanvas) {
+        status.textContent = 'Pointer is locked! Move your mouse. Press Esc to unlock.';
+        document.addEventListener('mousemove', handleMouseMove);
+      } else {
+        status.textContent = 'Pointer is unlocked.';
+        document.removeEventListener('mousemove', handleMouseMove);
+      }
+    });
+
+    function handleMouseMove(event) {
+      // Show movementX/movementY in the status panel
+      status.textContent = `Pointer is locked! Move: X=${event.movementX}, Y=${event.movementY} (Press Esc to unlock)`;
+      // You can use these values for your game logic!
+    }
+  </script>
+</body>
+</html>
